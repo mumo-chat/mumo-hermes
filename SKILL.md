@@ -1,6 +1,17 @@
 ---
 name: mumo
 description: Multi-model deliberation via mumo's MCP server. Best for contested architecture/product decisions, design reviews, pressure-testing a pre-launch spec, resolving tradeoffs with multiple defensible framings, or explicit user requests for a mumo panel. Requires the mumo MCP server to be configured in ~/.hermes/config.yaml.
+version: 0.1.2
+author: mumo
+license: MIT
+metadata:
+  hermes:
+    tags:
+      - deliberation
+      - multi-model
+      - mcp
+      - decision-support
+      - ai-tooling
 ---
 
 # mumo

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.2 — 2026-05-05
+
+Frontmatter cleanup ahead of HermesHub submission. No body changes.
+
+- **Frontmatter completed** — added `version`, `author`, `license`, and `metadata.hermes.tags` (deliberation, multi-model, mcp, decision-support, ai-tooling) per Hermes' creating-skills guide. Brings v0.1.x in line with hub frontmatter conventions.
+
 ## 0.1.1 — 2026-05-05
 
 Skill refinements from first real Hermes deliberation, plus a layout fix. The v0.1.0 skill produced clean end-to-end behavior (real tool calls, auto-chained wait, confident synthesis); these edits sharpen the framing.
