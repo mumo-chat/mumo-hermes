@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.3 — 2026-05-05
+
+Frontmatter aligned with HermesHub conventions after sampling existing hub skills (notion-integration, api-builder, agent-hardening, synapse-swarm). v0.1.2 used the generic agentskills.io shape; this matches what the hub actually ships.
+
+- **`version`** now string-quoted (`"0.1.3"`).
+- **`author`** moved under `metadata.author` (hub convention; top-level `author` is non-canonical for hermeshub).
+- **`compatibility`** field added — pointer to `mumo.chat/settings/api-keys` for the platform key.
+- **`metadata.hermes.category: agents`** — same bucket as synapse-swarm and paperclip (multi-agent collaboration).
+- **Tags** rewritten in flow style to match hub convention.
+
 ## 0.1.2 — 2026-05-05
 
 Frontmatter cleanup ahead of HermesHub submission. No body changes.

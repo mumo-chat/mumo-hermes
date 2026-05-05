@@ -1,17 +1,14 @@
 ---
 name: mumo
 description: Multi-model deliberation via mumo's MCP server. Best for contested architecture/product decisions, design reviews, pressure-testing a pre-launch spec, resolving tradeoffs with multiple defensible framings, or explicit user requests for a mumo panel. Requires the mumo MCP server to be configured in ~/.hermes/config.yaml.
-version: 0.1.2
-author: mumo
+version: "0.1.3"
 license: MIT
+compatibility: Requires a mumo platform API key (mmo_live_*) — get one at https://mumo.chat/settings/api-keys
 metadata:
+  author: mumo
   hermes:
-    tags:
-      - deliberation
-      - multi-model
-      - mcp
-      - decision-support
-      - ai-tooling
+    tags: [deliberation, multi-model, mcp, decision-support, ai-tooling]
+    category: agents
 ---
 
 # mumo
