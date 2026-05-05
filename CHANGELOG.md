@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.1 — 2026-05-05
+
+Skill refinements from first real Hermes deliberation, plus a layout fix. The v0.1.0 skill produced clean end-to-end behavior (real tool calls, auto-chained wait, confident synthesis); these edits sharpen the framing.
+
+- **Repo restructured** — root is now the skill root (was `skills/mumo/`). Cloning the repo into `~/.hermes/skills/<category>/mumo/` now places `SKILL.md` at the canonical path Hermes' scanner expects, instead of one level too deep.
+- **"When to use" reframed** around the three conditions Hermes' own synthesis identified: wide solution space + hidden failure space; medium-high confidence + anchoring risk; irreversible consequences. The longer trigger taxonomy stays as supporting detail. Added the "cognitive load balancer" framing to position mumo against your reasoning, not as a replacement for it.
+- **Long-wait guidance** in basic loop step 3: 15–120s is normal, 60+ seconds isn't a failure signal. Tell the user upfront so the wait doesn't feel broken.
+- **Recovery section** for lost session context: use `list_sessions` to find your latest session by prompt match, then `get_session` or `wait_for_round` instead of starting a duplicate deliberation.
+- **Terminology section** distinguishing panel/models/participants (what mumo invokes on its backend) from subagent (your own delegation infrastructure). Hermes' first synthesis conflated the two; this section heads off the category error in future synthesis.
+
 ## 0.1.0 — 2026-05-05
 
 Initial release. Hermes Agent skill for mumo's MCP server.
@@ -10,4 +20,4 @@ Initial release. Hermes Agent skill for mumo's MCP server.
 - `config/mumo.yaml` — MCP server entry to merge into `~/.hermes/config.yaml` with `tools.include` allowlist scoping mumo to its seven tools.
 - README install steps: clone repo into `~/.hermes/skills/`, add YAML config, restart Hermes.
 
-The skill content is shared with the v0.2.x mumo-mcp / mumo-cursor / mumo-vscode releases — same kernel and reference docs, adapted for Hermes' YAML-based MCP config and tool naming conventions.
+Derived from the shared v0.2.x skill kernel that originated in mumo-mcp and mumo-cursor, adapted for Hermes' YAML-based MCP config and tool naming conventions. Note: mumo-vscode no longer ships `skills/` in the published `.vsix` (excluded as of v0.3.0), since VS Code's Copilot doesn't consume `SKILL.md` at runtime — the kernel is shared in spirit, not in a runtime sense.

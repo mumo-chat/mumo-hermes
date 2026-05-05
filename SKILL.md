@@ -15,18 +15,17 @@ If tools return auth errors, the API key is missing or invalid. Direct the user 
 
 ## When to use
 
-Use mumo when independent multi-model perspectives are worth the latency tax. Concrete triggers:
+Use mumo when **the cost of being wrong is greater than the cost of deliberation**. Three conditions are typically the fingerprint:
 
-- **Architecture decisions** with non-obvious tradeoffs (storage, transport, consistency, caching)
-- **Design or plan review** before commitment
-- **Pre-launch pressure tests** — "what would we regret"
-- **Stuck debugging** after N failed repair attempts on the same issue
-- **Pre-commit adversarial review** on risky diffs (auth, payments, migrations, deletions, public APIs)
-- **Memory/skill promotion gates** — before persisting a durable lesson, get an independent check on whether it generalizes
-- **Strategy or product questions** with multiple defensible framings
-- **Explicit user requests** ("ask mumo", "run a mumo panel", "what do different models think")
+- **Wide solution space + hidden failure space** — you have a working approach but suspect it contains an overlooked edge case or long-term technical debt trap.
+- **Medium-high confidence + anchoring risk** — you've spent time on a design and become committed to it. External pressure from a panel forces a reversal check you can't reliably perform on your own.
+- **Irreversible consequences** — destructive database changes, non-trivial infra shifts, complex dependency migrations, security/auth/permissions changes, anything where rollback is hard.
 
-Skip mumo for factual lookups, syntax help, routine refactors, formatting, dependency bumps with clear errors, or normal edit-test cycles. The deliberation tax is real (4–220× tokens, 10–30s latency); spend it on decisions where mistakes compound.
+These map to concrete trigger types: architecture decisions with non-obvious tradeoffs, plan or design review before commitment, pre-launch pressure tests, stuck debugging after N failed repair attempts, pre-commit adversarial review on risky diffs, memory/skill promotion gates, strategy questions with multiple defensible framings, explicit user requests.
+
+Skip mumo for factual lookups, syntax help, routine refactors, formatting, dependency bumps with clear errors, or normal edit-test cycles. The deliberation tax is real (4–220× tokens, 15–120s latency); spend it on decisions where mistakes compound.
+
+Think of mumo as a cognitive load balancer for your reasoning — not a replacement for your judgment, but a way to externalize a design and stress-test it against perspectives you can't reliably generate yourself.
 
 ## Verifying the call actually fired
 
@@ -34,11 +33,28 @@ Autonomous agent loops occasionally fabricate tool-call results — claiming a d
 
 If a `create_deliberation` response doesn't contain a UUID-format `session_id`, the call did not happen. Verify by calling `list_sessions` and checking that your latest session matches the prompt you sent. If it doesn't, fire `create_deliberation` again — don't continue downstream as if the session exists.
 
+## Recovery: lost session context
+
+If you lose track of `session_id` or `round_id` mid-conversation (long chats, context compaction, dropped tool result), recover before starting a new deliberation:
+
+1. Call `list_sessions` to find your latest sessions. Match by prompt content.
+2. Call `get_session` with the recovered ID for full state, or `wait_for_round(session_id, round_id)` if you suspect a round is still in flight.
+3. Don't fire a fresh `create_deliberation` if the original is recoverable — duplicate sessions waste tokens and produce confusing parallel state.
+
+## Terminology: panel vs. subagent
+
+Two concepts that are easy to conflate:
+
+- **Panel / models / participants** — the LLMs mumo invokes on its backend (Claude, GPT, Gemini, Grok, etc.) to respond to a deliberation prompt. They run in isolation from your environment; you only see their structured output (claim map + snippets + prose).
+- **Subagent** — your own internal delegation infrastructure (Hermes' RPC subagents, etc.). Subagents run in *your* harness with *your* tool access against *your* state.
+
+When you describe who's deliberating, say "panel" or "models." Reserve "subagent" for your own delegation surface. The two are complementary — you can spawn a subagent to run benchmarks before invoking a mumo panel — but they're not the same thing.
+
 ## Basic loop
 
 1. Call `create_deliberation` with the user's problem. Set `application: "Hermes Agent"`.
 2. **Verify the response is a real session.** UUID format on `session_id` and `round_id`. If anything else, the call didn't fire — retry.
-3. Call `wait_for_round` with the returned `session_id` and `round_id`. The round may take 15–120s depending on model selection.
+3. Call `wait_for_round` with the returned `session_id` and `round_id`. **Long waits are normal** — frontier-model panels typically take 15–120s, and 60+ seconds isn't a failure signal. Tell the user upfront ("running a panel — expect ~30–60s") so the wait doesn't feel broken.
 4. Upon round completion, read the **claim map first**, then relevant participant prose. The claim map is the navigation layer; prose is the supporting evidence.
 5. Create snippets as your primary response to the round. Optionally add a round prompt for broad steering.
 6. Call `append_round` if another round would help. Otherwise stop and synthesize for the user.

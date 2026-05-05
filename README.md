@@ -6,23 +6,25 @@ For Claude Code, see [`mumo-chat/mumo-mcp`](https://github.com/mumo-chat/mumo-mc
 
 ## What's in the box
 
-- **`skills/mumo/SKILL.md`** — the canonical skill teaching Hermes how to use mumo: when to invoke, the deliberation loop (create → wait → read → snippet → append/stop), how to read claim maps, snippet doctrine, and when to verify session creation.
-- **`skills/mumo/playbooks/`** — four cognitive-shape playbooks loaded on demand: `contested-decision`, `design-review`, `uncertainty-expansion`, `red-team`.
-- **`skills/mumo/reference/`** — five reference docs: `claim-maps`, `snippets`, `model-selection`, `synthesis`, `operating-notes`.
+The repo root is the skill root — clone it directly into your Hermes skills directory and Hermes will discover `SKILL.md` at the canonical path.
+
+- **`SKILL.md`** — the canonical skill teaching Hermes how to use mumo: when to invoke, the deliberation loop (create → wait → read → snippet → append/stop), how to read claim maps, snippet doctrine, and when to verify session creation.
+- **`playbooks/`** — four cognitive-shape playbooks loaded on demand: `contested-decision`, `design-review`, `uncertainty-expansion`, `red-team`.
+- **`reference/`** — five reference docs: `claim-maps`, `snippets`, `model-selection`, `synthesis`, `operating-notes`.
 - **`config/mumo.yaml`** — the MCP server config to merge into `~/.hermes/config.yaml`.
 
 ## Install
 
 ### 1. Install the skill
 
-Clone this repo into your Hermes skills directory:
+Clone this repo directly into your Hermes skills directory:
 
 ```bash
 git clone https://github.com/mumo-chat/mumo-hermes \
   ~/.hermes/skills/autonomous-ai-agents/mumo
 ```
 
-(Or copy the `skills/mumo/` directory tree into `~/.hermes/skills/<your-preferred-category>/mumo/`.)
+That places `SKILL.md` at `~/.hermes/skills/autonomous-ai-agents/mumo/SKILL.md`, which is where Hermes' skill scanner expects it. If you prefer a different category, swap `autonomous-ai-agents` for whatever you use.
 
 ### 2. Get an API key
 
