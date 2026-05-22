@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.5 — 2026-05-22
+
+Cosmetic alignment to the conventions used by approved optional skills in the `NousResearch/hermes-agent` catalog (sampled `dcf-model`, `kanban-video-orchestrator`, `concept-diagrams`). No functional changes. Sets up a single source-of-truth artifact for the upcoming HermesHub PR submission — the canonical SKILL.md here and the contribution copy at `optional-skills/software-development/mumo/` are now identical, no separate PR-version frontmatter to maintain.
+
+- **`version` unquoted** — `version: "0.1.4"` → `version: 0.1.5`. YAML parses both as the same string; matches the unquoted style every approved optional skill uses.
+- **Tags lowercased** — `Deliberation`, `Decision-Support`, `Multi-Model`, `Design-Review`, `Architecture-Review`, `Plan-Review`, `MCP` → `deliberation`, `decision-support`, `multi-model`, `design-review`, `architecture-review`, `plan-review`, `mcp`. Tags are author-defined free text; lowercase is the source-of-truth convention. (Title-Case in earlier samples was just the docs-site display rendering.)
+- **`required_environment_variables` + `metadata.hermes.requires_tools` retained.** Neither field appears in the optional-skill samples we checked, but both are per the canonical `creating-skills` developer-guide doc. Keeping them means: hub-installed users get the interactive `MUMO_API_KEY` prompt (if Hermes honors the field) and the skill auto-hides when mumo MCP isn't registered. Both should be harmlessly ignored by parsers that don't recognize them. If the upstream PR review asks to drop, we'll drop them at that point.
+
 ## 0.1.4 — 2026-05-21
 
 Re-categorized, frontmatter realigned to canonical Hermes schema, and SKILL.md content now sourced from the shared `mumo-chat/mumo-mcp` baseline via the build-skill.js renderer. v0.1.3 sampled HermesHub conventions; this revision grounds them against the canonical docs (creating-skills, mcp-config-reference, skills user-guide) and real bundled-skill frontmatter (`claude-code`, `native-mcp`, `mcporter`, `fastmcp`).
