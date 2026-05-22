@@ -1,90 +1,74 @@
 # mumo — Hermes Agent skill
 
-**Multi-model deliberation for Hermes Agent.** When your local agent is decision-bound by its backbone model's confidence, mumo gives it on-demand access to a panel of frontier models — Claude, GPT, Gemini, Grok, Qwen, Kimi, GLM — for the hard calls.
+**Multi-model deliberation for Hermes.** When your local agent needs more than its backbone model can offer on a hard call, mumo runs a panel of frontier models (Claude, GPT, Gemini, Grok, Qwen, GLM, Kimi) in parallel and returns a structured claim map across them. Use it for architecture decisions, design reviews, pre-launch pressure tests, and any contested choice where a single model could be confidently wrong.
 
-For Claude Code, see [`mumo-chat/mumo-mcp`](https://github.com/mumo-chat/mumo-mcp). For Cursor, see [`mumo-chat/mumo-cursor`](https://github.com/mumo-chat/mumo-cursor). For VS Code, see [`mumo-chat/mumo-vscode`](https://github.com/mumo-chat/mumo-vscode).
-
-## What's in the box
-
-The repo root is the skill root — clone it directly into your Hermes skills directory and Hermes will discover `SKILL.md` at the canonical path.
-
-- **`SKILL.md`** — the canonical skill teaching Hermes how to use mumo: when to invoke, the deliberation loop (create → wait → read → snippet → append/stop), how to read claim maps, snippet doctrine, and when to verify session creation.
-- **`playbooks/`** — four cognitive-shape playbooks loaded on demand: `contested-decision`, `design-review`, `uncertainty-expansion`, `red-team`.
-- **`reference/`** — five reference docs: `claim-maps`, `snippets`, `model-selection`, `synthesis`, `operating-notes`.
-- **`config/mumo.yaml`** — the MCP server config to merge into `~/.hermes/config.yaml`.
+mumo is a tool the native Hermes agent calls — not another autonomous agent. You stay in control of the conversation; mumo just produces the panel output.
 
 ## Install
 
-### 1. Install the skill
+### HermesHub (recommended once published)
 
-Clone this repo directly into your Hermes skills directory:
+```bash
+hermes skills install mumo
+```
+
+Hermes prompts for your `MUMO_API_KEY` interactively, then handles the MCP server registration. Sign up at [mumo.chat](https://mumo.chat) and create a platform key at [Settings → API Keys](https://mumo.chat/settings/api-keys) (keys start with `mmo_live_`) before installing.
+
+### Local install via git clone
 
 ```bash
 git clone https://github.com/mumo-chat/mumo-hermes \
-  ~/.hermes/skills/autonomous-ai-agents/mumo
+  ~/.hermes/skills/software-development/mumo
 ```
 
-That places `SKILL.md` at `~/.hermes/skills/autonomous-ai-agents/mumo/SKILL.md`, which is where Hermes' skill scanner expects it. If you prefer a different category, swap `autonomous-ai-agents` for whatever you use.
+That places `SKILL.md` at `~/.hermes/skills/software-development/mumo/SKILL.md`, which is where Hermes' skill scanner expects it. mumo lives under `software-development/` alongside skills that share its shape — `writing-plans`, `plan`, `requesting-code-review` — all of which are "force yourself to think harder before acting" methodologies.
 
-### 2. Get an API key
+Then add the MCP server config: open `~/.hermes/config.yaml` and merge the contents of `config/mumo.yaml` under your `mcp_servers:` key, replacing `mmo_live_YOUR_KEY_HERE` with your actual key. **Fully exit and restart Hermes** afterward (the `/reload-mcp` slash command is unreliable across versions).
 
-Sign up at [mumo.chat](https://mumo.chat) and create a platform key at [Settings → API Keys](https://mumo.chat/settings/api-keys). Keys start with `mmo_live_`.
+After restart, the seven mumo tools register as `mcp_mumo_create_deliberation`, `mcp_mumo_wait_for_round`, etc.
 
-### 3. Add the MCP server config
+## Invoke
 
-Open `~/.hermes/config.yaml`. Merge the contents of `config/mumo.yaml` from this repo under your `mcp_servers:` key, replacing `mmo_live_YOUR_KEY_HERE` with your actual key.
+Hermes skills are explicitly called, not auto-triggered. Two ways:
 
-```yaml
-mcp_servers:
-  mumo:
-    url: "https://mumo.chat/api/mcp"
-    headers:
-      Authorization: "Bearer mmo_live_YOUR_KEY_HERE"
-    tools:
-      include:
-        - create_deliberation
-        - wait_for_round
-        - append_round
-        - get_session
-        - list_sessions
-        - list_models
-        - get_credit
-      resources: false
-      prompts: false
+```
+/mumo "Postgres or MongoDB for our event store given 50k events/day,
+       a Postgres-experienced team, and a 3-month runway?
+       What would we regret 6 months in?"
 ```
 
-### 4. Restart Hermes
+Or naturally: *"Ask mumo to compare Postgres and MongoDB for our event store..."*
 
-**Fully exit and restart Hermes.** The `/reload-mcp` slash command works for some installs but not all — restart is the canonical step.
+Either way, Hermes loads the skill, calls `create_deliberation`, waits for the round, reads the cross-model claim map, and synthesizes for you. You can stop there, or push back via typed snippets (`KEEP` / `EXPLORE` / `CHALLENGE` / `CORE` / `SHIFT`) and append another round.
 
-After restart, the seven mumo tools surface as `mcp_mumo_create_deliberation`, `mcp_mumo_wait_for_round`, etc., and the skill is available to the agent.
+## When mumo is worth the deliberation tax
 
-## Using the panel
+The skill encodes the trigger taxonomy in detail. In short, reach for mumo when:
 
-In a Hermes session, name `mumo` explicitly the first time so the agent reaches for the panel instead of answering directly:
-
-> Ask mumo to compare Postgres and MongoDB for our event store given 50k events/day, a Postgres-experienced team, and a 3-month runway. What would we regret 6 months in?
-
-Hermes calls `create_deliberation`, then `wait_for_round`. The completed round returns each model's prose plus a cross-model claim map showing where the panel agrees and where it splits. The skill teaches Hermes to read the claim map first, then react with typed snippets (KEEP / EXPLORE / CHALLENGE / CORE / SHIFT) and either append a follow-up round or stop and synthesize for you.
-
-## When mumo is worth the latency tax
-
-The skill encodes the trigger taxonomy in detail. In short:
-
-- Architecture decisions with non-obvious tradeoffs
-- Plan or design review before commitment
-- Pre-launch pressure tests
-- Stuck debugging after repeated failed attempts
-- Pre-commit adversarial review on risky diffs (auth, payments, migrations)
-- Memory/skill promotion gates
-- Strategy questions with multiple defensible framings
-- Explicit user requests
+- **Architecture decisions with non-obvious tradeoffs**
+- **Plan or design review before commitment**
+- **Pre-launch pressure tests**
+- **Stuck debugging after repeated failed attempts**
+- **Pre-commit adversarial review on risky diffs** (auth, payments, migrations)
+- **Strategy questions with multiple defensible framings**
+- **Explicit user requests**
 
 Skip mumo for routine refactors, formatting, syntax help, or anything where "just write a test" is cheaper than discussion.
 
-## Verifying the call actually fired
+## What's in this repo
 
-Autonomous agents occasionally fabricate tool-call results — claiming a deliberation was sent when it wasn't. Real mumo session IDs are UUIDs (e.g. `2acdab34-2484-4bc5-a24f-bf917fe81477`). If a `create_deliberation` response doesn't contain a UUID-format `session_id`, the call did not happen. Verify by calling `list_sessions`. The skill teaches this discipline; this README is the user-facing reminder.
+- **`SKILL.md`** — the canonical skill teaching Hermes when to invoke mumo, the deliberation loop, how to read claim maps, snippet doctrine, and verification discipline.
+- **`config/mumo.yaml`** — the MCP server config block to merge into `~/.hermes/config.yaml` (only needed for git-clone installs; HermesHub install handles this automatically).
+- **`playbooks/`** — four cognitive-shape playbooks loaded on demand: `contested-decision`, `design-review`, `uncertainty-expansion`, `red-team`.
+- **`reference/`** — five reference docs: `claim-maps`, `snippets`, `model-selection`, `synthesis`, `operating-notes`.
+
+## Related skills
+
+- [`writing-plans`](../writing-plans) — write implementation plans before building
+- [`plan`](../plan) — pause to externalize a plan before executing
+- [`requesting-code-review`](../requesting-code-review) — get a structured review before commit
+
+All of these share mumo's shape: structured methodology to think harder before acting.
 
 ## Links
 
