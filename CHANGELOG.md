@@ -1,26 +1,29 @@
 # Changelog
 
+## 0.1.6 — 2026-05-22
+
+CHANGELOG update.
+
 ## 0.1.5 — 2026-05-22
 
-Cosmetic alignment to the conventions used by approved optional skills in the `NousResearch/hermes-agent` catalog (sampled `dcf-model`, `kanban-video-orchestrator`, `concept-diagrams`). No functional changes. Sets up a single source-of-truth artifact for the upcoming HermesHub PR submission — the canonical SKILL.md here and the contribution copy at `optional-skills/software-development/mumo/` are now identical, no separate PR-version frontmatter to maintain.
+Cosmetic alignment to the conventions used by approved optional skills in the `NousResearch/hermes-agent` catalog (sampled `dcf-model`, `kanban-video-orchestrator`, `concept-diagrams`). No functional changes.
 
 - **`version` unquoted** — `version: "0.1.4"` → `version: 0.1.5`. YAML parses both as the same string; matches the unquoted style every approved optional skill uses.
 - **Tags lowercased** — `Deliberation`, `Decision-Support`, `Multi-Model`, `Design-Review`, `Architecture-Review`, `Plan-Review`, `MCP` → `deliberation`, `decision-support`, `multi-model`, `design-review`, `architecture-review`, `plan-review`, `mcp`. Tags are author-defined free text; lowercase is the source-of-truth convention. (Title-Case in earlier samples was just the docs-site display rendering.)
-- **`required_environment_variables` + `metadata.hermes.requires_tools` retained.** Neither field appears in the optional-skill samples we checked, but both are per the canonical `creating-skills` developer-guide doc. Keeping them means: hub-installed users get the interactive `MUMO_API_KEY` prompt (if Hermes honors the field) and the skill auto-hides when mumo MCP isn't registered. Both should be harmlessly ignored by parsers that don't recognize them. If the upstream PR review asks to drop, we'll drop them at that point.
+- **`required_environment_variables` + `metadata.hermes.requires_tools` retained.** Neither field appears in the optional-skill samples we checked, but both are per the canonical `creating-skills` developer-guide doc. Keeping them means: hub-installed users get the interactive `MUMO_API_KEY` prompt (if Hermes honors the field) and the skill auto-hides when mumo MCP isn't registered. Both should be harmlessly ignored by parsers that don't recognize them.
 
 ## 0.1.4 — 2026-05-21
 
-Re-categorized, frontmatter realigned to canonical Hermes schema, and SKILL.md content now sourced from the shared `mumo-chat/mumo-mcp` baseline via the build-skill.js renderer. v0.1.3 sampled HermesHub conventions; this revision grounds them against the canonical docs (creating-skills, mcp-config-reference, skills user-guide) and real bundled-skill frontmatter (`claude-code`, `native-mcp`, `mcporter`, `fastmcp`).
+Re-categorized, frontmatter realigned to canonical Hermes schema, and SKILL.md content refreshed against the canonical docs (creating-skills, mcp-config-reference, skills user-guide) and real bundled-skill frontmatter (`claude-code`, `native-mcp`, `mcporter`, `fastmcp`).
 
-- **Re-categorized to `software-development/`.** Install path is now `~/.hermes/skills/software-development/mumo`. The `autonomous-ai-agents/` cluster is for skills that delegate to *another autonomous agent* (Claude Code, Codex). mumo is a *tool* the native Hermes agent calls to run a deliberation panel — the structured-methodology-before-acting cousin of `writing-plans`, `plan`, and `requesting-code-review`.
+- **Re-categorized to `software-development/`.** Install path is now `~/.hermes/skills/software-development/mumo`. The `autonomous-ai-agents/` cluster is for skills that delegate to another autonomous agent. mumo is a tool the native Hermes agent calls to run a deliberation panel — the structured-methodology-before-acting cousin of `writing-plans`, `plan`, and `requesting-code-review`.
 - **Frontmatter cleanup.** `author` moved back to top-level (v0.1.3 had it under `metadata.author`; real hub skills like `claude-code` and `native-mcp` use top-level). Dropped `compatibility` and `metadata.hermes.category: agents` — neither is in the canonical schema. Added `platforms: [linux, macos, windows]`, `required_environment_variables` for `MUMO_API_KEY` (enables the interactive install prompt for hub installs), and `metadata.hermes.related_skills: [writing-plans, plan, requesting-code-review]`.
 - **`metadata.hermes.requires_tools: [mcp_mumo_create_deliberation]`** — hides the skill from all discovery surfaces (system prompt index, `skills_list()`, `/mumo` slash command) when mumo's MCP server isn't registered. Prevents users from seeing a skill they can't use.
 - **Tags restructured** to 7 Title-Case keywords matching real-world hub-skill style: `Deliberation`, `Decision-Support`, `Multi-Model`, `Design-Review`, `Architecture-Review`, `Plan-Review`, `MCP`. The `[Category, Subcategory, Keywords]` positional convention from the dev docs turned out to be aspirational — real skills use flat capitalized lists.
 - **Description rewritten** to lead with a WHAT verb and explicit "Use when..." clause. Drops the "Requires the mumo MCP server to be configured" tail since `requires_tools` handles that precondition structurally.
 - **MCP config polish** (`config/mumo.yaml`): added `supports_parallel_tool_calls: true`; explicit `connect_timeout: 60` + `timeout: 180` aligned with `wait_for_round` defaults.
 - **README rewritten** around the new positioning. `hermes skills install mumo` from HermesHub is the recommended install (prompts for `MUMO_API_KEY` automatically); git-clone fallback documented with the new path. `/mumo` slash-command invocation called out — Hermes skills are explicitly invoked, never auto-triggered.
-- **`reference/` → `references/`** (plural, per cross-ecosystem standardization). Added `recap.md` covering the `recap_round` / `recap_session` flags from the recent MCP server iteration.
-- **Build-system sourced.** SKILL.md is now rendered from `mumo-chat/mumo-mcp/skills/mumo/SKILL.template.md` via `node scripts/build-skill.js --target hermes`. Per-client overlay (Setup, frontmatter, install URL, application name, moderator example, tool-naming note) lives in `mumo-mcp/scripts/clients/hermes/`. Manual edits to this `SKILL.md` get overwritten on next render — edit at the baseline source.
+- **`reference/` → `references/`** (plural). Added `recap.md` covering the `recap_round` / `recap_session` flags from the recent MCP server iteration.
 
 ## 0.1.3 — 2026-05-05
 
@@ -57,5 +60,3 @@ Initial release. Hermes Agent skill for mumo's MCP server.
 - `skills/mumo/reference/` — five reference docs: `claim-maps`, `snippets`, `model-selection`, `synthesis`, `operating-notes`.
 - `config/mumo.yaml` — MCP server entry to merge into `~/.hermes/config.yaml` with `tools.include` allowlist scoping mumo to its seven tools.
 - README install steps: clone repo into `~/.hermes/skills/`, add YAML config, restart Hermes.
-
-Derived from the shared v0.2.x skill kernel that originated in mumo-mcp and mumo-cursor, adapted for Hermes' YAML-based MCP config and tool naming conventions. Note: mumo-vscode no longer ships `skills/` in the published `.vsix` (excluded as of v0.3.0), since VS Code's Copilot doesn't consume `SKILL.md` at runtime — the kernel is shared in spirit, not in a runtime sense.

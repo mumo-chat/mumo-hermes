@@ -1,7 +1,7 @@
 ---
 name: mumo
 description: Runs structured multi-model deliberations across frontier AI panels (Claude, GPT, Gemini, Grok, Qwen, GLM, Kimi) via mumo's MCP server. Use when independent perspectives are needed on contested architecture/product decisions, design reviews, pre-launch pressure tests, tradeoffs with multiple defensible framings, or explicit user requests for a mumo panel.
-version: 0.1.5
+version: 0.1.6
 author: mumo
 license: MIT
 platforms: [linux, macos, windows]
