@@ -6,13 +6,13 @@ mumo is a tool the native Hermes agent calls — not another autonomous agent. Y
 
 ## Install
 
-### HermesHub (recommended once published)
+### Skills hub (recommended)
 
 ```bash
-hermes skills install mumo
+hermes skills install mumo-hermes
 ```
 
-Hermes prompts for your `MUMO_API_KEY` interactively, then handles the MCP server registration. Sign up at [mumo.chat](https://mumo.chat) and create a platform key at [Settings → API Keys](https://mumo.chat/settings/api-keys) (keys start with `mmo_live_`) before installing.
+The slug is `mumo-hermes` — the bare `mumo` slug on the hub is the OpenClaw variant of this skill (different tool-name prefix and setup steps), so install this one. Hermes prompts for your `MUMO_API_KEY` interactively, then handles the MCP server registration. Sign up at [mumo.chat](https://mumo.chat) and create a platform key at [Settings → API Keys](https://mumo.chat/settings/api-keys) (keys start with `mmo_live_`) before installing.
 
 ### Local install via git clone
 
@@ -58,7 +58,7 @@ Skip mumo for routine refactors, formatting, syntax help, or anything where "jus
 ## What's in this repo
 
 - **`SKILL.md`** — the canonical skill teaching Hermes when to invoke mumo, the deliberation loop, how to read claim maps, snippet doctrine, and verification discipline.
-- **`config/mumo.yaml`** — the MCP server config block to merge into `~/.hermes/config.yaml` (only needed for git-clone installs; HermesHub install handles this automatically).
+- **`config/mumo.yaml`** — the MCP server config block to merge into `~/.hermes/config.yaml` (only needed for git-clone installs; a hub install handles this automatically).
 - **`playbooks/`** — four cognitive-shape playbooks loaded on demand: `contested-decision`, `design-review`, `uncertainty-expansion`, `red-team`.
 - **`reference/`** — five reference docs: `claim-maps`, `snippets`, `model-selection`, `synthesis`, `operating-notes`.
 
