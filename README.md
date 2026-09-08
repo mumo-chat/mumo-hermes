@@ -9,10 +9,10 @@ mumo is a tool the native Hermes agent calls — not another autonomous agent. Y
 ### Skills hub (recommended)
 
 ```bash
-hermes skills install mumo-hermes
+hermes skills install clawhub/mumo-hermes
 ```
 
-The slug is `mumo-hermes` — the bare `mumo` slug on the hub is the OpenClaw variant of this skill (different tool-name prefix and setup steps), so install this one. Hermes prompts for your `MUMO_API_KEY` interactively, then handles the MCP server registration. Sign up at [mumo.chat](https://mumo.chat) and create a platform key at [Settings → API Keys](https://mumo.chat/settings/api-keys) (keys start with `mmo_live_`) before installing.
+The slug is `mumo-hermes` — the bare `clawhub/mumo` slug is the OpenClaw variant of this skill (different tool-name prefix and setup steps), so install this one. Hermes prompts for your `MUMO_API_KEY` interactively, then handles the MCP server registration. Sign up at [mumo.chat](https://mumo.chat) and create a platform key at [Settings → API Keys](https://mumo.chat/settings/api-keys) (keys start with `mmo_live_`) before installing.
 
 ### Local install via git clone
 

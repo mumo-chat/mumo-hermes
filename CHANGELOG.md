@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.2 — 2026-09-08
+
+Registry-only: the ClawHub display name is `mumo (Hermes Agent)` again (the 0.6.1 publish omitted `--name`), and the install command uses the `clawhub/mumo-hermes` form the Hermes skills catalog generates.
+
 ## 0.6.1 — 2026-09-08
 
 Distribution correction. There is no separate "HermesHub" registry: the Hermes CLI's Skills Hub resolves `hermes skills search mumo` to ClawHub, where the bare `mumo` slug is the OpenClaw skill. This skill is now published on ClawHub as `mumo-hermes`, and the README and `SKILL.md` setup notes point at `hermes skills install mumo-hermes` instead of "HermesHub". No tool or loop changes.
