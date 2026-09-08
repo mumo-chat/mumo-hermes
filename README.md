@@ -1,6 +1,6 @@
 # mumo — Hermes Agent skill
 
-**Multi-model deliberation for Hermes.** When your local agent needs more than its backbone model can offer on a hard call, mumo runs a panel of frontier models (Claude, GPT, Gemini, Grok, Qwen, GLM, Kimi) in parallel and returns a structured claim map across them. Use it for architecture decisions, design reviews, pre-launch pressure tests, and any contested choice where a single model could be confidently wrong.
+**Multi-model deliberation for Hermes.** When your local agent needs more than its backbone model can offer on a hard call, mumo runs a panel of frontier models (Claude, GPT, Gemini, Grok, DeepSeek, Kimi, and more) in parallel and returns each model's full response plus typed cross-model reactions — what each model keeps, challenges, or wants explored in the others' claims. Use it for architecture decisions, design reviews, pre-launch pressure tests, and any contested choice.
 
 mumo is a tool the native Hermes agent calls — not another autonomous agent. You stay in control of the conversation; mumo just produces the panel output.
 
@@ -25,7 +25,7 @@ That places `SKILL.md` at `~/.hermes/skills/software-development/mumo/SKILL.md`,
 
 Then add the MCP server config: open `~/.hermes/config.yaml` and merge the contents of `config/mumo.yaml` under your `mcp_servers:` key, replacing `mmo_live_YOUR_KEY_HERE` with your actual key. **Fully exit and restart Hermes** afterward (the `/reload-mcp` slash command is unreliable across versions).
 
-After restart, the seven mumo tools register as `mcp_mumo_create_deliberation`, `mcp_mumo_wait_for_round`, etc.
+After restart, the eight mumo tools register as `mcp_mumo_create_deliberation`, `mcp_mumo_wait_for_round`, `mcp_mumo_append_round`, `mcp_mumo_get_session`, `mcp_mumo_list_sessions`, `mcp_mumo_list_models`, `mcp_mumo_share_session`, `mcp_mumo_get_credit`.
 
 ## Invoke
 

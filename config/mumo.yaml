@@ -18,6 +18,7 @@ mcp_servers:
         - get_session
         - list_sessions
         - list_models
+        - share_session
         - get_credit
       resources: false
       prompts: false
