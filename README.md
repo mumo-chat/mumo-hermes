@@ -12,7 +12,7 @@ mumo is a tool the native Hermes agent calls — not another autonomous agent. Y
 hermes skills install clawhub/mumo-hermes
 ```
 
-The slug is `mumo-hermes` — the bare `clawhub/mumo` slug is the OpenClaw variant of this skill (different tool-name prefix and setup steps), so install this one. Hermes prompts for your `MUMO_API_KEY` interactively, then handles the MCP server registration. Sign up at [mumo.chat](https://mumo.chat) and create a platform key at [Settings → API Keys](https://mumo.chat/settings/api-keys) (keys start with `mmo_live_`) before installing.
+The slug is `mumo-hermes` — the bare `clawhub/mumo` slug is the OpenClaw variant of this skill (different tool-name prefix and setup steps), so install this one. Hermes prompts for your `MUMO_API_KEY` at install time and saves it to `~/.hermes/.env`; you add the MCP server block yourself (below). Sign up at [mumo.chat](https://mumo.chat) and create a platform key at [Settings → API Keys](https://mumo.chat/settings/api-keys) (keys start with `mmo_live_`) before installing.
 
 ### Local install via git clone
 
@@ -23,9 +23,33 @@ git clone https://github.com/mumo-chat/mumo-hermes \
 
 That places `SKILL.md` at `~/.hermes/skills/software-development/mumo/SKILL.md`, which is where Hermes' skill scanner expects it. mumo lives under `software-development/` alongside skills that share its shape — `writing-plans`, `plan`, `requesting-code-review` — all of which are "force yourself to think harder before acting" methodologies.
 
-Then add the MCP server config: open `~/.hermes/config.yaml` and merge the contents of `config/mumo.yaml` under your `mcp_servers:` key, replacing `mmo_live_YOUR_KEY_HERE` with your actual key. **Fully exit and restart Hermes** afterward (the `/reload-mcp` slash command is unreliable across versions).
+Then add the MCP server config: open `~/.hermes/config.yaml` and merge the contents of `config/mumo.yaml` under your `mcp_servers:` key. The block references `${MUMO_API_KEY}` rather than embedding the key, so put the key in `~/.hermes/.env` instead.
+
+Create the file and restrict it *before* putting anything in it, so the key is never written into a world-readable file:
+
+```bash
+touch ~/.hermes/.env && chmod 600 ~/.hermes/.env
+```
+
+Then open `~/.hermes/.env` in your editor and add a line:
+
+```
+MUMO_API_KEY=mmo_live_your_key_here
+```
+
+Edit the file rather than appending from the shell: a command containing the literal key is recorded in your shell history, and running it twice silently stacks a duplicate entry.
+
+`.env` is where Hermes expects secrets to live, which keeps the mumo block in `config.yaml` free of a live credential. **Fully exit and restart Hermes** afterward (the `/reload-mcp` slash command is unreliable across versions).
 
 After restart, the eight mumo tools register as `mcp_mumo_create_deliberation`, `mcp_mumo_wait_for_round`, `mcp_mumo_append_round`, `mcp_mumo_get_session`, `mcp_mumo_list_sessions`, `mcp_mumo_list_models`, `mcp_mumo_share_session`, `mcp_mumo_get_credit`.
+
+Confirm the connection end to end before spending anything on a panel:
+
+```bash
+hermes mcp test mumo
+```
+
+That opens a real connection and lists the tools it finds. `hermes mcp list` only reports what is saved in your config — it does not prove the key resolved. If the test fails, the masked `Authorization:` line it prints tells you whether `${MUMO_API_KEY}` resolved at all.
 
 ## Invoke
 

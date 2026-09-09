@@ -1,7 +1,7 @@
 ---
 name: mumo
 description: Runs a multi-model deliberation across models from different labs (Claude, GPT, Gemini, Grok, DeepSeek, Kimi, and more) via mumo's MCP server, returning full responses plus typed cross-model reactions. Use when independent perspectives are needed on architecture/product decisions, design and plan review before implementation, pre-launch pressure tests, tradeoffs with multiple defensible framings, or explicit user requests for a mumo panel. Especially valuable for pre-implementation review of anything touching auth, security, tokens, payments, data exposure, or migrations.
-version: 0.6.2
+version: 0.6.3
 author: mumo
 license: MIT
 platforms: [linux, macos, windows]
@@ -34,11 +34,11 @@ mumo runs a deliberation across models from different labs (Claude, GPT, Gemini,
 
 ## Setup
 
-The mumo MCP server is configured in `~/.hermes/config.yaml` under `mcp_servers`. If this skill was installed from the skills hub (`hermes skills install clawhub/mumo-hermes`), Hermes prompts for `MUMO_API_KEY` at install time and auto-saves it to `.env`. If installed via `git clone`, see `config/mumo.yaml` in this skill's directory for the canonical block to merge under your `mcp_servers:` key, with the placeholder `mmo_live_YOUR_KEY_HERE` replaced by your real key.
+The mumo MCP server is configured in `~/.hermes/config.yaml` under `mcp_servers`, and the block references `${MUMO_API_KEY}` rather than embedding the key. If this skill was installed from the skills hub (`hermes skills install clawhub/mumo-hermes`), Hermes prompts for `MUMO_API_KEY` at install time and auto-saves it to `~/.hermes/.env`, which is what that reference resolves to. If installed via `git clone`, see `config/mumo.yaml` in this skill's directory for the canonical block to merge under your `mcp_servers:` key, and add a `MUMO_API_KEY=mmo_live_…` line to `~/.hermes/.env` yourself.
 
 Either way, after the config lands, **fully exit and restart Hermes** (the `/reload-mcp` slash command is unreliable across versions).
 
-If tools return auth errors, the API key is missing or invalid. Direct the user to https://mumo.chat/settings/api-keys to create one (keys start with `mmo_live_`).
+If tools return auth errors, the API key is missing or invalid. Check that `MUMO_API_KEY` is set in `~/.hermes/.env` — Hermes sends an empty credential when the reference does not resolve, which the server answers with a 401. Direct the user to https://mumo.chat/settings/api-keys to create one (keys start with `mmo_live_`).
 
 ## When to use
 

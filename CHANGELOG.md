@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.3 — 2026-09-09
+
+Credential-hygiene guidance. `config/mumo.yaml` now references `${MUMO_API_KEY}` in the `Authorization` header instead of carrying a `mmo_live_YOUR_KEY_HERE` placeholder for the user to overwrite, and the key belongs in `~/.hermes/.env` — the file Hermes designates for secrets. This also closes a gap in the hub install: Hermes already prompted for `MUMO_API_KEY` and wrote it to `.env`, but the shipped config ignored that value and asked for a literal instead, so the stored key went unused.
+
+README and SKILL.md setup steps updated to match, and the README no longer says a hub install "handles the MCP server registration" — Hermes prompts for the key and saves it; the `mcp_servers` block is still added by hand.
+
+The `.env` step creates and `chmod 600`s the file before the key goes in, and tells you to edit it rather than append from the shell — a command carrying the literal key lands in shell history, and a second run stacks a duplicate entry. A new verification step runs `hermes mcp test mumo` — a real connection that lists the tools — before the first deliberation; `hermes mcp list` only reports saved config and cannot show whether the key resolved.
+
 ## 0.6.2 — 2026-09-08
 
 Registry-only: the ClawHub display name is `mumo (Hermes Agent)` again (the 0.6.1 publish omitted `--name`), and the install command uses the `clawhub/mumo-hermes` form the Hermes skills catalog generates.
