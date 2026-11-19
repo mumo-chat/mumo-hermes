@@ -41,7 +41,7 @@ Edit the file rather than appending from the shell: a command containing the lit
 
 `.env` is where Hermes expects secrets to live, which keeps the mumo block in `config.yaml` free of a live credential. **Fully exit and restart Hermes** afterward (the `/reload-mcp` slash command is unreliable across versions).
 
-After restart, the mumo tools register as `mcp_mumo_create_deliberation`, `mcp_mumo_wait_for_round`, `mcp_mumo_append_round`, `mcp_mumo_get_session`, `mcp_mumo_list_sessions`, `mcp_mumo_list_models`, `mcp_mumo_share_session`, `mcp_mumo_get_credit`.
+After restart, the mumo tools register as `mcp_mumo_create_deliberation`, `mcp_mumo_ask_a_model`, `mcp_mumo_wait_for_round`, `mcp_mumo_append_round`, `mcp_mumo_get_session`, `mcp_mumo_list_sessions`, `mcp_mumo_list_models`, `mcp_mumo_share_session`, `mcp_mumo_get_credit`.
 
 Confirm the connection end to end before spending anything on a panel:
 

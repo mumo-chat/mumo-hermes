@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.7.0 — 2026-11-19
+
+Coordinated client release rendered from the mumo-mcp 0.7.0 baseline.
+
+- New tool: `ask_a_model` puts a question to one model of your choice and returns one answer, with no cross-model reactions or claim map. It is added to `tools.include` in `config/mumo.yaml`. Hermes filters to that list, so **existing installs must add `- ask_a_model` to `tools.include` in `~/.hermes/config.yaml`** (or re-merge the bundled config) and restart Hermes before the tool can be called.
+- `SKILL.md` has a new section on when to use `ask_a_model` and when to use `create_deliberation` instead.
+- `SKILL.md` now tells the agent to surface each round's `web_url`. `claim_map_url` still works and carries the same value.
+- README tool list updated.
+
 ## 0.6.3 — 2026-09-09
 
 Credential-hygiene guidance. `config/mumo.yaml` now references `${MUMO_API_KEY}` in the `Authorization` header instead of carrying a `mmo_live_YOUR_KEY_HERE` placeholder for the user to overwrite, and the key belongs in `~/.hermes/.env` — the file Hermes designates for secrets. This also closes a gap in the hub install: Hermes already prompted for `MUMO_API_KEY` and wrote it to `.env`, but the shipped config ignored that value and asked for a literal instead, so the stored key went unused.

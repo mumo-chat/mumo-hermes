@@ -23,6 +23,7 @@ mcp_servers:
     tools:
       include:
         - create_deliberation
+        - ask_a_model
         - wait_for_round
         - append_round
         - get_session
