@@ -63,7 +63,7 @@ Hermes skills are explicitly called, not auto-triggered. Two ways:
 
 Or naturally: *"Ask mumo to compare Postgres and MongoDB for our event store..."*
 
-Either way, Hermes loads the skill, calls `create_deliberation`, waits for the round, reads the cross-model claim map, and synthesizes for you. You can stop there, or push back via typed snippets (`KEEP` / `EXPLORE` / `CHALLENGE` / `CORE` / `SHIFT`) and append another round.
+Either way, Hermes loads the skill, calls `create_deliberation`, waits for the round, reads the models' reactions to each other's claims, and synthesizes for you. You can stop there, or ask for another round steered with typed reactions (`KEEP` / `EXPLORE` / `CHALLENGE` / `CORE` / `SHIFT`).
 
 ## When mumo is worth the deliberation tax
 
@@ -81,10 +81,10 @@ Skip mumo for routine refactors, formatting, syntax help, or anything where "jus
 
 ## What's in this repo
 
-- **`SKILL.md`** — the canonical skill teaching Hermes when to invoke mumo, the deliberation loop, how to read claim maps, snippet doctrine, and verification discipline.
+- **`SKILL.md`** — the canonical skill teaching Hermes when to invoke mumo, the deliberation loop, how to read the reactions, how to write your own, and verification discipline.
 - **`config/mumo.yaml`** — the MCP server config block to merge into `~/.hermes/config.yaml` (only needed for git-clone installs; a hub install handles this automatically).
 - **`playbooks/`** — four cognitive-shape playbooks loaded on demand: `contested-decision`, `design-review`, `uncertainty-expansion`, `red-team`.
-- **`reference/`** — five reference docs: `claim-maps`, `snippets`, `model-selection`, `synthesis`, `operating-notes`.
+- **`reference/`** — six reference docs: `reading-reactions`, `writing-reactions`, `model-selection`, `synthesis`, `takeaway`, `operating-notes`.
 
 ## Related skills
 
